@@ -51,6 +51,7 @@ with left:
 
 with right:
     # Documentation for the app
+    st.write("")
     with st.beta_expander("What is this mode about?"):
         if x != 3:
             """
