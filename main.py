@@ -39,7 +39,7 @@ with right:
 
 # Mode choices (1 or 4)
 fpath = ''
-x = st.selectbox("Select an operating mode", ['Mode 1 - 100 RPM','Mode 1 - 300 RPM','Mode 4 - Regenerative Braking'])
+x = st.selectbox("Select an operating mode to view simulation results", ['Mode 1 - 100 RPM','Mode 1 - 300 RPM','Mode 4 - Regenerative Braking'])
 
 if x == 'Mode 1 - 100 RPM': fpath = 'Mode1_100.mat'
 elif x == 'Mode 1 - 300 RPM': fpath = 'Mode1_300.mat'
@@ -139,4 +139,11 @@ with col2:
 
 # Show the raw data in a panda dataframe
 with st.beta_expander("View raw data!"):
-    st.write(df)
+    one, two = st.beta_columns(2)
+    with one:
+        st.write(df)
+    try:
+        with two:
+            st.write(df_torque)
+    except: pass
+
