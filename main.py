@@ -49,17 +49,17 @@ else: fpath = 'Mode4.mat'
 mat = loadmat(f'MATLAB_files/{fpath}')
 
 # Conversion to pandas dataframe
-try:
-    df = pd.DataFrame(np.hstack((mat['t'],mat['bat_soc'], mat['rotor_speed'], mat['rotor_torque'], mat['sc_soc'])),
-                        columns=['Time (s)', 'Battery SoC', 'Rotor Speed', 'Rotor Torque', 'Supercapacitor SoC']).set_index('Time (s)')
+# try:
+#     df = pd.DataFrame(np.hstack((mat['t'],mat['bat_soc'], mat['rotor_speed'], mat['rotor_torque'], mat['sc_soc'])),
+#                         columns=['Time (s)', 'Battery SoC', 'Rotor Speed', 'Rotor Torque', 'Supercapacitor SoC']).set_index('Time (s)')
 
-# Rotor torques throw an error caused by increased precision - save to new dataframe
-except ValueError:
-    df = pd.DataFrame(np.hstack((mat['t'],mat['bat_soc'], mat['rotor_speed'], mat['sc_soc'])),
-                        columns=['Time (s)', 'Battery SoC', 'Rotor Speed', 'Supercapacitor SoC']).set_index('Time (s)')
+# # Rotor torques throw an error caused by increased precision - save to new dataframe
+# except ValueError:
+df = pd.DataFrame(np.hstack((mat['t'],mat['bat_soc'], mat['rotor_speed'], mat['sc_soc'])),
+                    columns=['Time (s)', 'Battery SoC', 'Rotor Speed', 'Supercapacitor SoC']).set_index('Time (s)')
 
-    df_torque = pd.DataFrame(np.hstack((mat['t_torque'], mat['rotor_torque'])),
-                        columns=['Time (s)', 'Rotor Torque']).set_index('Time (s)')
+df_torque = pd.DataFrame(np.hstack((mat['t_torque'], mat['rotor_torque'])),
+                    columns=['Time (s)', 'Rotor Torque']).set_index('Time (s)')
 
 # Set Streamlit beta columns (2 columns)
 col1, col2 = st.beta_columns(2)
@@ -85,48 +85,54 @@ rotor_speed = go.Figure(
         yaxis=dict(title='RPM', showgrid=False, zeroline=False)
     )
 )
-try:
-    rotor_torque = go.Figure(
-        data=[
-            go.Scatter(x=df.index, y=df['Rotor Torque'], name='Rotor Torque'),
-        ],
-        layout=go.Layout(
-            title='Rotor Torque',
-            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
-            yaxis=dict(title='Nm', showgrid=False, zeroline=False)
-        )
+# try:
+#     rotor_torque = go.Figure(
+#         data=[
+#             go.Scatter(x=df.index, y=df['Rotor Torque'], name='Rotor Torque'),
+#         ],
+#         layout=go.Layout(
+#             title='Rotor Torque',
+#             xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+#             yaxis=dict(title='Nm', showgrid=False, zeroline=False)
+#         )
+#     )
+#     super_soc = go.Figure(
+#         data=[
+#             go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
+#         ],
+#         layout=go.Layout(
+#             title='Supercapacitor SoC',
+#             xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+#             yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[90,100])
+#         )
+#     )
+# except:
+
+rotor_torque = go.Figure(
+    data=[
+        go.Scatter(x=df_torque.index, y=df_torque['Rotor Torque'], name='Rotor Torque'),
+    ],
+    layout=go.Layout(
+        title='Rotor Torque',
+        xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+        yaxis=dict(title='Nm', showgrid=False, zeroline=False)
     )
-    super_soc = go.Figure(
-        data=[
-            go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
-        ],
-        layout=go.Layout(
-            title='Supercapacitor SoC',
-            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
-            yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[90,100])
-        )
+)
+
+if x == 'Mode 1 - 100 RPM': ran = [90, 100]
+elif x == 'Mode 1 - 300 RPM': ran = [90, 100]
+else: ran = [0, 15]
+
+super_soc = go.Figure(
+    data=[
+        go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
+    ],
+    layout=go.Layout(
+        title='Supercapacitor SoC',
+        xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+        yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=ran)
     )
-except:
-    rotor_torque = go.Figure(
-        data=[
-            go.Scatter(x=df_torque.index, y=df_torque['Rotor Torque'], name='Rotor Torque'),
-        ],
-        layout=go.Layout(
-            title='Rotor Torque',
-            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
-            yaxis=dict(title='Nm', showgrid=False, zeroline=False)
-        )
-    )
-    super_soc = go.Figure(
-        data=[
-            go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
-        ],
-        layout=go.Layout(
-            title='Supercapacitor SoC',
-            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
-            yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[0,15])
-        )
-    )
+)
 
 # Plotting the graphs
 with col1:
