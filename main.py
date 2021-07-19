@@ -96,7 +96,17 @@ try:
             yaxis=dict(title='Nm', showgrid=False, zeroline=False)
         )
     )
-except KeyError:
+    super_soc = go.Figure(
+        data=[
+            go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
+        ],
+        layout=go.Layout(
+            title='Supercapacitor SoC',
+            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+            yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[90,100])
+        )
+    )
+except:
     rotor_torque = go.Figure(
         data=[
             go.Scatter(x=df_torque.index, y=df_torque['Rotor Torque'], name='Rotor Torque'),
@@ -107,16 +117,16 @@ except KeyError:
             yaxis=dict(title='Nm', showgrid=False, zeroline=False)
         )
     )
-super_soc = go.Figure(
-    data=[
-        go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
-    ],
-    layout=go.Layout(
-        title='Supercapacitor SoC',
-        xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
-        yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[90,100])
+    super_soc = go.Figure(
+        data=[
+            go.Scatter(x=df.index, y=df['Supercapacitor SoC'], name='Supercapacitor SoC'),
+        ],
+        layout=go.Layout(
+            title='Supercapacitor SoC',
+            xaxis=dict(title='Time (s)', showgrid=False, zeroline=False),
+            yaxis=dict(title='SoC (%)', showgrid=False, zeroline=False, range=[0,15])
+        )
     )
-)
 
 # Plotting the graphs
 with col1:
