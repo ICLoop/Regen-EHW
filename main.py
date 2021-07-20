@@ -141,3 +141,11 @@ with st.beta_expander("View raw data!"):
         with two:
             st.write(df_torque)
     except: pass
+
+
+
+st.image('statemach.png')
+st.image('dyn.png')
+st.image('dyn2.png')
+st.image('dyn3.png')
+st.image('rl.png')
