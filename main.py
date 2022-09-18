@@ -32,7 +32,7 @@ with centre:
     st.write("")
     st.write("")
     '''
-    ### Scan for our [poster](https://www.overleaf.com/read/hssgskqhcqwz)!
+    ### Scan for our [poster](https://www.researchgate.net/publication/363641006_Simulation_of_a_Hybrid_Energy_Storage_System_Enabling_Regenerative_Braking_of_a_BLDC)!
     '''
 
 with right:
